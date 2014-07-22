@@ -232,7 +232,7 @@ static NSMutableArray *publishPermissions;
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded) {
         
         // If there's one, just open the session silently, without showing the user the login UI
-        [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
                                           // Handler for session state changes
@@ -476,6 +476,8 @@ static NSMutableArray *publishPermissions;
 + (BOOL)isReadPermission: (NSString*) permission
 {
     if([permission isEqualToString:@"basic_info"]) return YES;
+    if([permission isEqualToString:@"public_profile"]) return YES;
+    if([permission isEqualToString:@"user_friends"]) return YES;
     if([permission isEqualToString:@"user_about_me"]) return YES;
     if([permission isEqualToString:@"friends_about_me"]) return YES;
     if([permission isEqualToString:@"user_activities"]) return YES;
