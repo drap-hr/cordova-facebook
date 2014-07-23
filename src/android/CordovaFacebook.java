@@ -40,9 +40,10 @@ public class CordovaFacebook extends CordovaPlugin {
     		JSONArray ps = args.getJSONArray(2);
     		ArrayList<Permission> permsArr = new ArrayList<Permission>();
     		for(int i=0; i<ps.length(); i++){
-    			Permission p = Permission.findPermission(ps.getString(i));
-    			//Permission p = Permission.PUBLIC_PROFILE;
-    			permsArr.add(p);
+    			Permission p = Permission.fromValue(ps.getString(i));
+    			if(p != null){
+				permsArr.add(p);
+			}
     		}
     		if(permsArr.isEmpty()){
     			permsArr.add(Permission.PUBLIC_PROFILE);
