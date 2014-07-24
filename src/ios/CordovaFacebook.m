@@ -139,6 +139,7 @@ static NSMutableArray *publishPermissions;
         
         // if need publish permissions
         if(publishPermissions.count > 0 && [CordovaFacebook activeSessionHasPermissions:publishPermissions] == NO) {
+          dispatch_async(dispatch_get_current_queue(), ^{
             [FBSession.activeSession requestNewPublishPermissions:publishPermissions
                                                   defaultAudience:FBSessionDefaultAudienceEveryone
                                                 completionHandler:^(FBSession *session, NSError *error) {
@@ -155,6 +156,7 @@ static NSMutableArray *publishPermissions;
                                                     NSLog(@"Request publish granted for: %@", publishPermissions);
                                                     [CordovaFacebook reportLogin];
                                                 }];
+          });
         } else {
             [CordovaFacebook reportLogin];
         }
@@ -232,7 +234,7 @@ static NSMutableArray *publishPermissions;
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded) {
         
         // If there's one, just open the session silently, without showing the user the login UI
-        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
+        [FBSession openActiveSessionWithReadPermissions:readPermissions
                                            allowLoginUI:NO
                                       completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
                                           // Handler for session state changes
